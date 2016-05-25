@@ -11,7 +11,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import by.traning.task3.controller.FoodSaxHandler;
 import by.traning.task3.domain.Food;
 
-public class SAXSimpleMain {
+public class SAXMenuParser {
 
 	public static void main(String[] args) throws SAXException, IOException {
 		XMLReader reader = XMLReaderFactory.createXMLReader();
@@ -31,6 +31,8 @@ public class SAXSimpleMain {
 					"\nописание="+food.getDescription()+
 					"\nпорция="+food.getPortion()+
 					"\nцена="+food.getPrice()+"\n");
+			
+			
 	
 }
 	}
