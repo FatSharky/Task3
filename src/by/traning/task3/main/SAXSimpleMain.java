@@ -9,7 +9,6 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import by.traning.task3.controller.FoodSaxHandler;
-import by.traning.task3.controller.SimpleFoodHandler;
 import by.traning.task3.domain.Food;
 
 public class SAXSimpleMain {
