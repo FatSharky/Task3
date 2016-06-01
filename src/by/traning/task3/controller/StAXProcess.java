@@ -1,74 +1,80 @@
 package by.traning.task3.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import by.traning.task3.domain.Food;
-import by.traning.task3.domain.FoodTagName;
+import by.traning.task3.domain.Dish;
+import by.traning.task3.domain.Kind;
+import by.traning.task3.domain.Menu;
+import by.traning.task3.interfaces.TagNames;
 
-public class StAXProcess {
-	private static List<Food> process(XMLStreamReader reader) throws XMLStreamException {
+public class StAXProcess implements TagNames{
 
-		List<Food> menu = new ArrayList<Food>();
-		Food food = null;
-		FoodTagName elementname = null;
-		while (reader.hasNext()) {
-			int type = reader.next();
-			switch (type) {
+	public Menu readMenu(XMLStreamReader xmlStreamReader) throws XMLStreamException {
+		Menu menu = null;
+		Kind currentKind = null;
+		Dish currentDish = null;
+		StringBuilder text = null;
+
+		while (xmlStreamReader.hasNext()) {
+
+			switch (xmlStreamReader.next()) {
+
 			case XMLStreamConstants.START_ELEMENT:
-				elementname = FoodTagName.getElementTagName(reader.getLocalName());
-				switch (elementname) {
-				case FOOD:
-					food = new Food();
-					String id = reader.getAttributeValue(null, "ID").trim();
-					food.setId(id);
+				switch (xmlStreamReader.getLocalName()) {
+				case MENU_TAG:
+					menu = new Menu();
 					break;
-				}
-				break;
-			case XMLStreamConstants.CHARACTERS:
-				String text = reader.getText().trim();
-
-				if (text.isEmpty()) {
+				case KIND_TAG:
+					currentKind = new Kind();
 					break;
-				}
-				switch (elementname) {
-				case TYPE:
-					food.setType(text.toString());
+				case DISH_TAG:
+					currentDish = new Dish();
 					break;
-				case NAME:
-					food.setName(text.toString());
-					break;
-				case PHOTO:
-					food.setPhoto(text.toString());
-					break;
-				case DESCRIPTION:
-					food.setDescription(text.toString());
-					break;
-				case PORTION:
-					food.setPortion(text.toString());
-					break;
-				case PRICE:
-					food.setPrice(Integer.parseInt(text.toString()));
-					break;
-
 				}
 				break;
 
 			case XMLStreamConstants.END_ELEMENT:
-				elementname = FoodTagName.getElementTagName(reader.getLocalName());
-				switch (elementname) {
-				case FOOD:
-					menu.add(food);
+				switch (xmlStreamReader.getLocalName()) {
+				case KIND_TAG:
+					menu.addKind(currentKind);
+					break;
+				case DISH_TAG:
+					currentKind.addDish(currentDish);
+					break;
+				case KIND_NAME_TAG:
+					currentKind.setName(text.toString());
+					break;
+				case PHOTO_TAG:
+					currentDish.setPhoto(text.toString());
+					break;
+				case NAME_TAG:
+					currentDish.setName(text.toString());
+					break;
+				case DESCRIPTION_TAG:
+					currentDish.setDescription(text.toString());
+					break;
+				case PORTION_TAG:
+					currentDish.setPortion(text.toString());
+					break;
+				case PRICE_TAG:
+					currentDish.setPrice(Integer.parseInt(text.toString()));
+					break;
 				}
+				break;
+
+			case XMLStreamConstants.CHARACTERS:
+				text = new StringBuilder();
+				text.append(xmlStreamReader.getText());
+				break;
+
 			}
+
 		}
 
 		return menu;
-
 	}
 
 }
