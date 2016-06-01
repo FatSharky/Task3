@@ -8,9 +8,9 @@ import javax.xml.stream.XMLStreamReader;
 import by.traning.task3.domain.Dish;
 import by.traning.task3.domain.Kind;
 import by.traning.task3.domain.Menu;
-import by.traning.task3.interfaces.TagNames;
 
-public class StAXProcess implements TagNames{
+
+public class StAXProcess{
 
 	public Menu readMenu(XMLStreamReader xmlStreamReader) throws XMLStreamException {
 		Menu menu = null;
@@ -24,13 +24,13 @@ public class StAXProcess implements TagNames{
 
 			case XMLStreamConstants.START_ELEMENT:
 				switch (xmlStreamReader.getLocalName()) {
-				case MENU_TAG:
+				case TagNames.MENU_TAG:
 					menu = new Menu();
 					break;
-				case KIND_TAG:
+				case TagNames.KIND_TAG:
 					currentKind = new Kind();
 					break;
-				case DISH_TAG:
+				case TagNames.DISH_TAG:
 					currentDish = new Dish();
 					break;
 				}
@@ -38,28 +38,28 @@ public class StAXProcess implements TagNames{
 
 			case XMLStreamConstants.END_ELEMENT:
 				switch (xmlStreamReader.getLocalName()) {
-				case KIND_TAG:
+				case TagNames.KIND_TAG:
 					menu.addKind(currentKind);
 					break;
-				case DISH_TAG:
+				case TagNames.DISH_TAG:
 					currentKind.addDish(currentDish);
 					break;
-				case KIND_NAME_TAG:
+				case TagNames.KIND_NAME_TAG:
 					currentKind.setName(text.toString());
 					break;
-				case PHOTO_TAG:
+				case TagNames.PHOTO_TAG:
 					currentDish.setPhoto(text.toString());
 					break;
-				case NAME_TAG:
+				case TagNames.NAME_TAG:
 					currentDish.setName(text.toString());
 					break;
-				case DESCRIPTION_TAG:
+				case TagNames.DESCRIPTION_TAG:
 					currentDish.setDescription(text.toString());
 					break;
-				case PORTION_TAG:
+				case TagNames.PORTION_TAG:
 					currentDish.setPortion(text.toString());
 					break;
-				case PRICE_TAG:
+				case TagNames.PRICE_TAG:
 					currentDish.setPrice(Integer.parseInt(text.toString()));
 					break;
 				}
