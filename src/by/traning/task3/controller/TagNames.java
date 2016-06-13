@@ -1,6 +1,8 @@
 package by.traning.task3.controller;
 
 public final class TagNames {
+	private TagNames(){}
+	
 	public static final String MENU_TAG = "menu";
 	public static final String KIND_TAG = "kind";
 	public static final String DISH_TAG = "dish";
